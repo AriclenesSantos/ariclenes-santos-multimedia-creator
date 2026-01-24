@@ -19,6 +19,7 @@ interface GalleryItem {
   image: string;
   description: string;
   type: "image" | "video";
+  videoUrl?: string;
 }
 
 const galleryItems: GalleryItem[] = [
@@ -69,6 +70,33 @@ const galleryItems: GalleryItem[] = [
     image: socialMedia,
     description: "Criação de conteúdo visual para redes sociais e campanhas de marketing digital.",
     type: "image",
+  },
+  {
+    id: 7,
+    title: "EZVIZ Motion - Dezembro",
+    category: "motion",
+    image: "/videos/ezviz-dezembro.mp4",
+    description: "Motion graphics promocional para campanha EZVIZ com animações dinâmicas e visuais impactantes.",
+    type: "video",
+    videoUrl: "/videos/ezviz-dezembro.mp4",
+  },
+  {
+    id: 8,
+    title: "EZVIZ Novos Produtos",
+    category: "motion",
+    image: "/videos/ezviz-novos.mp4",
+    description: "Vídeo promocional animado apresentando novos produtos EZVIZ com motion graphics modernos.",
+    type: "video",
+    videoUrl: "/videos/ezviz-novos.mp4",
+  },
+  {
+    id: 9,
+    title: "EZVIZ Motion Graphics",
+    category: "motion",
+    image: "/videos/ezviz9.mp4",
+    description: "Animação criativa para marca EZVIZ com elementos visuais dinâmicos e transições fluidas.",
+    type: "video",
+    videoUrl: "/videos/ezviz9.mp4",
   },
 ];
 
@@ -182,12 +210,27 @@ const Gallery = () => {
                 onClick={() => openLightbox(item)}
               >
                 <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-card border-gradient shadow-card">
-                  {/* Image */}
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
+                  {/* Video or Image */}
+                  {item.videoUrl ? (
+                    <video
+                      src={item.videoUrl}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      muted
+                      loop
+                      playsInline
+                      onMouseEnter={(e) => e.currentTarget.play()}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.pause();
+                        e.currentTarget.currentTime = 0;
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  )}
                   
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -244,20 +287,32 @@ const Gallery = () => {
               className="relative max-w-5xl w-full max-h-[90vh] flex flex-col lg:flex-row gap-6"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Image container */}
+              {/* Video or Image container */}
               <div className="relative flex-1 aspect-[4/3] lg:aspect-auto rounded-2xl overflow-hidden bg-card shadow-elevated">
-                <img
-                  src={selectedItem.image}
-                  alt={selectedItem.title}
-                  className="w-full h-full object-cover"
-                />
-                
-                {selectedItem.type === "video" && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-background/40">
-                    <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center shadow-glow cursor-pointer hover:scale-110 transition-transform">
-                      <Play className="w-8 h-8 text-primary-foreground ml-1" />
-                    </div>
-                  </div>
+                {selectedItem.videoUrl ? (
+                  <video
+                    src={selectedItem.videoUrl}
+                    className="w-full h-full object-cover"
+                    controls
+                    autoPlay
+                    loop
+                  />
+                ) : (
+                  <>
+                    <img
+                      src={selectedItem.image}
+                      alt={selectedItem.title}
+                      className="w-full h-full object-cover"
+                    />
+                    
+                    {selectedItem.type === "video" && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-background/40">
+                        <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center shadow-glow cursor-pointer hover:scale-110 transition-transform">
+                          <Play className="w-8 h-8 text-primary-foreground ml-1" />
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
 
