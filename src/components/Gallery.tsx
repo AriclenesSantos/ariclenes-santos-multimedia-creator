@@ -15,6 +15,11 @@ import diaBalconista from "@/assets/gallery/dia-balconista.png";
 import diaHeroiNacional from "@/assets/gallery/dia-heroi-nacional.png";
 import diaObrigado from "@/assets/gallery/dia-obrigado.jpg";
 import diaInformatica from "@/assets/gallery/dia-informatica.jpg";
+import ezvizLc3 from "@/assets/gallery/ezviz-lc3.png";
+import ezvizBm1 from "@/assets/gallery/ezviz-bm1.jpg";
+import ezvizH3c from "@/assets/gallery/ezviz-h3c.jpg";
+import ezvizH8c from "@/assets/gallery/ezviz-h8c.jpg";
+import ezvizH7c from "@/assets/gallery/ezviz-h7c.jpg";
 
 type Category = "todos" | "design" | "video" | "foto" | "motion";
 
@@ -150,6 +155,46 @@ const galleryItems: GalleryItem[] = [
     category: "design",
     image: diaInformatica,
     description: "Homenagem aos profissionais de informática - Golderio Group.",
+    type: "image",
+  },
+  {
+    id: 16,
+    title: "EZVIZ LC3 - Câmera com Iluminação",
+    category: "design",
+    image: ezvizLc3,
+    description: "Arte promocional da câmera inteligente LC3 com iluminação integrada - Golden Rio / EZVIZ.",
+    type: "image",
+  },
+  {
+    id: 17,
+    title: "EZVIZ BM1 - Monitor de Bebê",
+    category: "design",
+    image: ezvizBm1,
+    description: "Design promocional do monitor de bebê inteligente BM1 - Golden Rio / EZVIZ.",
+    type: "image",
+  },
+  {
+    id: 18,
+    title: "EZVIZ H3c - Câmera Externa",
+    category: "design",
+    image: ezvizH3c,
+    description: "Arte publicitária da câmera H3c com visão noturna colorida - Golden Rio / EZVIZ.",
+    type: "image",
+  },
+  {
+    id: 19,
+    title: "EZVIZ H8C - Câmera 360°",
+    category: "design",
+    image: ezvizH8c,
+    description: "Design promocional da câmera de vigilância externa H8C com rotação 360° - Golden Rio / EZVIZ.",
+    type: "image",
+  },
+  {
+    id: 20,
+    title: "EZVIZ H7c Dual",
+    category: "design",
+    image: ezvizH7c,
+    description: "Arte promocional da câmera H7c Dual com vigilância panorâmica em alta resolução - Golden Rio / EZVIZ.",
     type: "image",
   },
 ];
