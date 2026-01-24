@@ -1,6 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { X, Play, ChevronLeft, ChevronRight, Camera, Video, Palette, Sparkles } from "lucide-react";
+import useEmblaCarousel from "embla-carousel-react";
 
 // Gallery images
 import brandingProject from "@/assets/gallery/branding-project.jpg";
@@ -214,6 +215,47 @@ const Gallery = () => {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Carousel setup for "todos" view
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: "start",
+    skipSnaps: false,
+  });
+
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setCanScrollPrev(emblaApi.canScrollPrev());
+    setCanScrollNext(emblaApi.canScrollNext());
+  }, [emblaApi]);
+
+  // Auto-scroll for carousel
+  useEffect(() => {
+    if (!emblaApi || activeCategory !== "todos") return;
+    
+    const autoScroll = setInterval(() => {
+      emblaApi.scrollNext();
+    }, 4000);
+
+    return () => clearInterval(autoScroll);
+  }, [emblaApi, activeCategory]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi, onSelect]);
+
   const filteredItems =
     activeCategory === "todos"
       ? galleryItems
@@ -241,6 +283,66 @@ const Gallery = () => {
     setCurrentIndex(newIndex);
     setSelectedItem(filteredItems[newIndex]);
   };
+
+  // Render gallery item card
+  const renderGalleryCard = (item: GalleryItem, index: number) => (
+    <div
+      key={item.id}
+      className="group cursor-pointer"
+      onClick={() => openLightbox(item)}
+    >
+      <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-card border-gradient shadow-card">
+        {/* Video or Image */}
+        {item.videoUrl ? (
+          <video
+            src={item.videoUrl}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            muted
+            loop
+            playsInline
+            onMouseEnter={(e) => e.currentTarget.play()}
+            onMouseLeave={(e) => {
+              e.currentTarget.pause();
+              e.currentTarget.currentTime = 0;
+            }}
+          />
+        ) : (
+          <img
+            src={item.image}
+            alt={item.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+        )}
+        
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute bottom-0 left-0 right-0 p-5">
+            <div className="flex items-center gap-2 mb-2">
+              {item.type === "video" && (
+                <span className="flex items-center gap-1 px-2 py-1 bg-primary/20 rounded-full text-xs text-primary">
+                  <Play className="w-3 h-3" /> Vídeo
+                </span>
+              )}
+            </div>
+            <h3 className="text-lg font-bold font-display">{item.title}</h3>
+            <p className="text-muted-foreground text-sm line-clamp-2">{item.description}</p>
+          </div>
+        </div>
+
+        {/* Play button for videos */}
+        {item.type === "video" && (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100">
+            <Play className="w-6 h-6 text-primary-foreground ml-1" />
+          </div>
+        )}
+
+        {/* Corner accent */}
+        <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <Sparkles className="w-4 h-4 text-primary" />
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <section id="galeria" className="py-20 lg:py-32 relative overflow-hidden">
@@ -291,77 +393,71 @@ const Gallery = () => {
           ))}
         </motion.div>
 
-        {/* Gallery grid */}
-        <motion.div
-          layout
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredItems.map((item, index) => (
-              <motion.div
-                key={item.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="group cursor-pointer"
-                onClick={() => openLightbox(item)}
-              >
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-card border-gradient shadow-card">
-                  {/* Video or Image */}
-                  {item.videoUrl ? (
-                    <video
-                      src={item.videoUrl}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      muted
-                      loop
-                      playsInline
-                      onMouseEnter={(e) => e.currentTarget.play()}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.pause();
-                        e.currentTarget.currentTime = 0;
-                      }}
-                    />
-                  ) : (
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                  )}
-                  
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="absolute bottom-0 left-0 right-0 p-5">
-                      <div className="flex items-center gap-2 mb-2">
-                        {item.type === "video" && (
-                          <span className="flex items-center gap-1 px-2 py-1 bg-primary/20 rounded-full text-xs text-primary">
-                            <Play className="w-3 h-3" /> Vídeo
-                          </span>
-                        )}
-                      </div>
-                      <h3 className="text-lg font-bold font-display">{item.title}</h3>
-                      <p className="text-muted-foreground text-sm line-clamp-2">{item.description}</p>
-                    </div>
+        {/* Carousel view for "todos" */}
+        {activeCategory === "todos" ? (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="relative"
+          >
+            {/* Carousel container */}
+            <div className="overflow-hidden" ref={emblaRef}>
+              <div className="flex gap-6">
+                {galleryItems.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0"
+                  >
+                    {renderGalleryCard(item, index)}
                   </div>
+                ))}
+              </div>
+            </div>
 
-                  {/* Play button for videos */}
-                  {item.type === "video" && (
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100">
-                      <Play className="w-6 h-6 text-primary-foreground ml-1" />
-                    </div>
-                  )}
+            {/* Navigation arrows */}
+            <button
+              onClick={scrollPrev}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-6 z-10 w-12 h-12 rounded-full glass border border-border flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 shadow-lg"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={scrollNext}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-6 z-10 w-12 h-12 rounded-full glass border border-border flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 shadow-lg"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
 
-                  {/* Corner accent */}
-                  <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Sparkles className="w-4 h-4 text-primary" />
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+            {/* Progress indicator */}
+            <div className="flex justify-center gap-2 mt-8">
+              <span className="text-sm text-muted-foreground">
+                Deslize para ver mais trabalhos
+              </span>
+            </div>
+          </motion.div>
+        ) : (
+          /* Grid view for filtered categories */
+          <motion.div
+            layout
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            <AnimatePresence mode="popLayout">
+              {filteredItems.map((item, index) => (
+                <motion.div
+                  key={item.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                >
+                  {renderGalleryCard(item, index)}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )}
       </div>
 
       {/* Lightbox */}
