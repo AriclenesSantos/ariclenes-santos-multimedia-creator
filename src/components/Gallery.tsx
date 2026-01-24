@@ -9,6 +9,12 @@ import eventPhotography from "@/assets/gallery/event-photography.jpg";
 import uiDesign from "@/assets/gallery/ui-design.jpg";
 import motionGraphics from "@/assets/gallery/motion-graphics.jpg";
 import socialMedia from "@/assets/gallery/social-media.jpg";
+import diaEducacao from "@/assets/gallery/dia-educacao.jpg";
+import diaIndependencia from "@/assets/gallery/dia-independencia.png";
+import diaBalconista from "@/assets/gallery/dia-balconista.png";
+import diaHeroiNacional from "@/assets/gallery/dia-heroi-nacional.png";
+import diaObrigado from "@/assets/gallery/dia-obrigado.jpg";
+import diaInformatica from "@/assets/gallery/dia-informatica.jpg";
 
 type Category = "todos" | "design" | "video" | "foto" | "motion";
 
@@ -97,6 +103,54 @@ const galleryItems: GalleryItem[] = [
     description: "Animação criativa para marca EZVIZ com elementos visuais dinâmicos e transições fluidas.",
     type: "video",
     videoUrl: "/videos/ezviz9.mp4",
+  },
+  {
+    id: 10,
+    title: "Dia Internacional da Educação",
+    category: "design",
+    image: diaEducacao,
+    description: "Arte comemorativa para o Dia Internacional da Educação - Golderio Group.",
+    type: "image",
+  },
+  {
+    id: 11,
+    title: "Independência de Angola",
+    category: "design",
+    image: diaIndependencia,
+    description: "Celebração dos 50 anos da Independência Nacional de Angola - Golderio Group.",
+    type: "image",
+  },
+  {
+    id: 12,
+    title: "Dia do Balconista",
+    category: "design",
+    image: diaBalconista,
+    description: "Homenagem ao Dia do Balconista - Golderio Group.",
+    type: "image",
+  },
+  {
+    id: 13,
+    title: "Dia do Herói Nacional",
+    category: "design",
+    image: diaHeroiNacional,
+    description: "Arte comemorativa do Dia do Herói Nacional, homenageando Agostinho Neto - Golderio Group.",
+    type: "image",
+  },
+  {
+    id: 14,
+    title: "Dia do Obrigado",
+    category: "design",
+    image: diaObrigado,
+    description: "Celebração do Dia do Obrigado com parceria Golderio e Hikvision.",
+    type: "image",
+  },
+  {
+    id: 15,
+    title: "Dia do Profissional de Informática",
+    category: "design",
+    image: diaInformatica,
+    description: "Homenagem aos profissionais de informática - Golderio Group.",
+    type: "image",
   },
 ];
 
