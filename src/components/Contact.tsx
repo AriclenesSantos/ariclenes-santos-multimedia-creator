@@ -48,7 +48,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Email</p>
-                    <p className="font-medium">ariclenes@email.com</p>
+                    <p className="font-medium">jacyanneari@gmail.com</p>
                   </div>
                 </div>
               </div>
@@ -60,7 +60,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">WhatsApp</p>
-                    <p className="font-medium">+244 XXX XXX XXX</p>
+                    <p className="font-medium">+244 949 265 323</p>
                   </div>
                 </div>
               </div>
@@ -120,7 +120,7 @@ const Contact = () => {
                   Entre em contato para discutir seu próximo projeto.
                 </p>
                 <a
-                  href="mailto:ariclenes@email.com"
+                  href="mailto:jacyanneari@gmail.com"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-background text-foreground rounded-lg font-medium hover:bg-background/90 transition-all duration-300"
                 >
                   <Mail className="w-4 h-4" />
