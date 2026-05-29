@@ -301,7 +301,15 @@ const Gallery = () => {
               loop
               playsInline
               autoPlay
-              preload="metadata"
+              preload="auto"
+              onLoadedData={(e) => {
+                const v = e.currentTarget;
+                v.play().catch(() => {});
+              }}
+              onCanPlay={(e) => {
+                const v = e.currentTarget;
+                if (v.paused) v.play().catch(() => {});
+              }}
             />
             {/* Cinematic vignette */}
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,hsl(var(--background)/0.55)_100%)]" />
