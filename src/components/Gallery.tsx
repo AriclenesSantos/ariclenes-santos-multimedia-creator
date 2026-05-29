@@ -205,7 +205,6 @@ const categories = [
   { id: "design" as Category, label: "Design", icon: Palette },
   { id: "video" as Category, label: "Vídeo", icon: Video },
   { id: "foto" as Category, label: "Fotografia", icon: Camera },
-  { id: "motion" as Category, label: "Motion", icon: Play },
 ];
 
 const Gallery = () => {
