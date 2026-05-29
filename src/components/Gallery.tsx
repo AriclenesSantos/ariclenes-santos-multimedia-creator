@@ -22,7 +22,7 @@ import ezvizH3c from "@/assets/gallery/ezviz-h3c.jpg";
 import ezvizH8c from "@/assets/gallery/ezviz-h8c.jpg";
 import ezvizH7c from "@/assets/gallery/ezviz-h7c.jpg";
 
-type Category = "todos" | "design" | "video" | "foto" | "motion";
+type Category = "todos" | "design" | "video" | "foto";
 
 interface GalleryItem {
   id: number;
