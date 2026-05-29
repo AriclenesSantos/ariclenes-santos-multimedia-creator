@@ -70,7 +70,7 @@ const galleryItems: GalleryItem[] = [
   {
     id: 5,
     title: "Motion Graphics Abstract",
-    category: "motion",
+    category: "video",
     image: motionGraphics,
     description: "Animações abstratas para campanhas de marketing e abertura de vídeos.",
     type: "video",
@@ -86,7 +86,7 @@ const galleryItems: GalleryItem[] = [
   {
     id: 7,
     title: "EZVIZ Motion - Dezembro",
-    category: "motion",
+    category: "video",
     image: "/videos/ezviz-dezembro.mp4",
     description: "Motion graphics promocional para campanha EZVIZ com animações dinâmicas e visuais impactantes.",
     type: "video",
@@ -95,7 +95,7 @@ const galleryItems: GalleryItem[] = [
   {
     id: 8,
     title: "EZVIZ Novos Produtos",
-    category: "motion",
+    category: "video",
     image: "/videos/ezviz-novos.mp4",
     description: "Vídeo promocional animado apresentando novos produtos EZVIZ com motion graphics modernos.",
     type: "video",
@@ -104,7 +104,7 @@ const galleryItems: GalleryItem[] = [
   {
     id: 9,
     title: "EZVIZ Motion Graphics",
-    category: "motion",
+    category: "video",
     image: "/videos/ezviz9.mp4",
     description: "Animação criativa para marca EZVIZ com elementos visuais dinâmicos e transições fluidas.",
     type: "video",
